@@ -1,0 +1,35 @@
+{
+    "name": "smart_bin_sense",
+    "short_name": "smart_bin_sense",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#0175C2",
+    "theme_color": "#0175C2",
+    "description": "SmartBinSense is an innovative and user-friendly waste management app designed to revolutionize how we handle our trash. By integrating cutting-edge sensor technology with a user-friendly interface, SmartBinSense provides real-time information about the fill levels of waste bins. This allows users to optimize waste collection routes, reduce unnecessary pickups, and ultimately contribute to more efficient and sustainable waste management practices. With SmartBinSense, individuals and businesses can take a proactive approach to environmental responsibility, making waste disposal smarter, greener, and more cost-effective.",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
