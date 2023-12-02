@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_bin_sense/colors.dart';
+import 'package:smart_bin_sense/views/otp_verify_screen.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
@@ -151,10 +152,22 @@ class _LogInScreenState extends State<LogInScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 80.0),
-              child: ElevatedButton(onPressed: (){}, child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text("Send OTP",style: GoogleFonts.nunito(),),
-              )),
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const OtpVerifyScreen(),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      "Send OTP",
+                      style: GoogleFonts.nunito(),
+                    ),
+                  )),
             )
           ],
         ),
