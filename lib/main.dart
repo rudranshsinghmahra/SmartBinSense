@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:smart_bin_sense/colors.dart';
 import 'package:smart_bin_sense/views/splash_screen.dart';
 
-void main(){
+void main() {
   runApp(const MyApp());
 }
 
@@ -10,9 +11,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      theme: ThemeData(primarySwatch: primary,useMaterial3: false),
+      home: const SplashScreen(),
     );
   }
 }
