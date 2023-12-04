@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:smart_bin_sense/views/onboarding_screen.dart';
 
 import '../colors.dart';
 
@@ -25,7 +26,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
           children: [
             Text(
               "A 6 digit OTP has been sent\n to your mobile number",
-              style: GoogleFonts.nunito(),
+              style: GoogleFonts.roboto(),
               textAlign: TextAlign.center,
             ),
             Padding(
@@ -78,6 +79,12 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                 keyboardType: TextInputType.number,
                 onCompleted: (v) {
                   debugPrint("Completed");
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const OnBoardingScreenOne(),
+                    ),
+                  );
                 },
                 onChanged: (value) {
                   debugPrint(value);
