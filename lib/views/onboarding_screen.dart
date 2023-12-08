@@ -43,7 +43,7 @@ class _OnBoardingScreenOneState extends State<OnBoardingScreenOne> {
           infiniteAutoScroll: true,
           pages: [
             PageViewModel(
-              image: _buildImage("onboarding_image_one.jpg"),
+              image: _buildImage("onboard_screen_one.png"),
               titleWidget: Text(
                 "Track your garbage truck",
                 style: GoogleFonts.roboto(
@@ -61,7 +61,7 @@ class _OnBoardingScreenOneState extends State<OnBoardingScreenOne> {
               ),
             ),
             PageViewModel(
-              image: _buildImage("onboarding_image_one.jpg"),
+              image: _buildImage("onboard_screen_two.png"),
               titleWidget: Text(
                 "Click and Upload",
                 style: GoogleFonts.roboto(
@@ -79,7 +79,7 @@ class _OnBoardingScreenOneState extends State<OnBoardingScreenOne> {
               ),
             ),
             PageViewModel(
-              image: _buildImage("onboarding_image_one.jpg"),
+              image: _buildImage("onboard_screen_three.png"),
               titleWidget: Text(
                 "3R's for life",
                 style: GoogleFonts.roboto(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_bin_sense/colors.dart';
 
-Widget customAppBar(TextEditingController searchTextEditingController) {
+Widget customAppBarLocation(TextEditingController searchTextEditingController) {
   return Container(
     height: 150,
     width: double.infinity,
@@ -67,44 +67,32 @@ Widget customAppBar(TextEditingController searchTextEditingController) {
           child: Row(
             children: [
               Expanded(
-                  child: TextField(
-                controller: searchTextEditingController,
-                style: GoogleFonts.nunito(color: Colors.white70),
-                decoration: InputDecoration(
-                  fillColor: const Color(0xff80ad72).withOpacity(0.9),
-                  filled: true,
-                  hintText: "Search",
-                  hintStyle: GoogleFonts.nunito(color: Colors.white70),
-                  enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.transparent)),
-                  prefixIcon: const Icon(
-                    Icons.search_outlined,
-                    color: Colors.white70,
+                child: TextField(
+                  controller: searchTextEditingController,
+                  style: GoogleFonts.nunito(color: Colors.white70),
+                  decoration: InputDecoration(
+                    fillColor: const Color(0xff80ad72).withOpacity(0.9),
+                    filled: true,
+                    hintText: "Search",
+                    hintStyle: GoogleFonts.nunito(color: Colors.white70),
+                    enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent)),
+                    prefixIcon: const Icon(
+                      Icons.search_outlined,
+                      color: Colors.white70,
+                    ),
+                    suffixIcon: const Icon(
+                      Icons.mic_none_outlined,
+                      color: Colors.white70,
+                    ),
+                    contentPadding: EdgeInsets.zero,
+                    border: const OutlineInputBorder(),
                   ),
-                  suffixIcon: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        "|",
-                        style: GoogleFonts.nunito(
-                            fontSize: 35, color: Colors.white70),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(right: 8.0),
-                        child: Icon(
-                          Icons.mic_none_outlined,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  ),
-                  contentPadding: EdgeInsets.zero,
-                  border: const OutlineInputBorder(),
                 ),
-              ))
+              )
             ],
           ),
-        )
+        ),
       ],
     ),
   );

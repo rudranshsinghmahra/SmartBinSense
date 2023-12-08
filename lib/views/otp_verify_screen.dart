@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -6,7 +8,9 @@ import 'package:smart_bin_sense/views/onboarding_screen.dart';
 import '../colors.dart';
 
 class OtpVerifyScreen extends StatefulWidget {
-  const OtpVerifyScreen({super.key});
+  const OtpVerifyScreen({super.key, required this.verificationId});
+
+  final String verificationId;
 
   @override
   State<OtpVerifyScreen> createState() => _OtpVerifyScreenState();
@@ -79,12 +83,27 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                 keyboardType: TextInputType.number,
                 onCompleted: (v) {
                   debugPrint("Completed");
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const OnBoardingScreenOne(),
-                    ),
-                  );
+                  try {
+                    PhoneAuthCredential phoneAuthCredential =
+                        PhoneAuthProvider.credential(
+                            verificationId: widget.verificationId,
+                            smsCode: otpEditingController.text.toString());
+                    FirebaseAuth.instance
+                        .signInWithCredential(phoneAuthCredential)
+                        .then((value) => {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const OnBoardingScreenOne(),
+                                ),
+                              )
+                            });
+                  } catch (e) {
+                    if (kDebugMode) {
+                      print(e.toString());
+                    }
+                  }
                 },
                 onChanged: (value) {
                   debugPrint(value);
@@ -94,8 +113,6 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                 },
                 beforeTextPaste: (text) {
                   debugPrint("Allowing to paste $text");
-                  //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                  //but you can show anything you want here, like your pop up saying wrong paste format or etc
                   return true;
                 },
               ),

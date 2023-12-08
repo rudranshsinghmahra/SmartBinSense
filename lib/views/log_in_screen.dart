@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_bin_sense/colors.dart';
+import 'package:smart_bin_sense/services/firebase_services.dart';
 import 'package:smart_bin_sense/views/otp_verify_screen.dart';
+
+import 'onboarding_screen.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
@@ -13,6 +16,7 @@ class LogInScreen extends StatefulWidget {
 
 class _LogInScreenState extends State<LogInScreen> {
   TextEditingController phoneEditingController = TextEditingController();
+  FirebaseServices firebaseServices = FirebaseServices();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +57,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 22.0,top: 10),
+                  padding: const EdgeInsets.only(bottom: 22.0, top: 10),
                   child: Text(
                     "These details are not shared with anyone",
                     style: GoogleFonts.roboto(),
@@ -79,8 +83,8 @@ class _LogInScreenState extends State<LogInScreen> {
                               borderRadius: BorderRadius.circular(12),
                             ),
                             enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 3, color: primary.shade600),
+                                borderSide: BorderSide(
+                                    width: 3, color: primary.shade600),
                                 borderRadius: BorderRadius.circular(12)),
                           ),
                         ),
@@ -100,61 +104,91 @@ class _LogInScreenState extends State<LogInScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                  child: Card(
-                    color: Colors.white,
-                    elevation: 5,
-                    shadowColor: primary.shade600,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const FaIcon(
-                            FontAwesomeIcons.google,
-                            color: Colors.red,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 7),
-                            child: Text(
-                              "Sign in with Google",
-                              style: GoogleFonts.nunito(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
+                  child: GestureDetector(
+                    onTap: () {
+                      firebaseServices.signInWithGoogle().then((value) {
+                        if (value.user != null) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const OnBoardingScreenOne(),
+                            ),
+                          );
+                        }
+                      });
+                    },
+                    child: Card(
+                      color: Colors.white,
+                      elevation: 5,
+                      shadowColor: primary.shade600,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const FaIcon(
+                              FontAwesomeIcons.google,
+                              color: Colors.red,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 7),
+                              child: Text(
+                                "Sign in with Google",
+                                style: GoogleFonts.nunito(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 28.0, vertical: 10),
-                  child: Card(
-                    color: Colors.white,
-                    elevation: 5,
-                    shadowColor: primary.shade600,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const FaIcon(
-                            FontAwesomeIcons.facebook,
-                            color: Color(0xff187ae7),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 7),
-                            child: Text(
-                              "Sign in with Facebook",
-                              style: GoogleFonts.nunito(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 28.0, vertical: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      firebaseServices.signInWithFacebook().then((value) {
+                        if (value.user != null) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const OnBoardingScreenOne(),
+                            ),
+                          );
+                        }
+                      });
+                    },
+                    child: Card(
+                      color: Colors.white,
+                      elevation: 5,
+                      shadowColor: primary.shade600,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const FaIcon(
+                              FontAwesomeIcons.facebook,
+                              color: Color(0xff187ae7),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 7),
+                              child: Text(
+                                "Sign in with Facebook",
+                                style: GoogleFonts.nunito(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -163,12 +197,12 @@ class _LogInScreenState extends State<LogInScreen> {
                   padding: const EdgeInsets.only(top: 80.0),
                   child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const OtpVerifyScreen(),
-                          ),
-                        );
+                        if (phoneEditingController.value.text.length == 10) {
+                          firebaseServices.verifyPhoneNumber(
+                            phoneEditingController.text.trim(),
+                            context,
+                          );
+                        }
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
