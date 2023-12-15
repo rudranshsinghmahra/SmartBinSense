@@ -1,14 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_bin_sense/chooseAndTrackTruck.dart';
 import 'package:smart_bin_sense/colors.dart';
 import 'package:smart_bin_sense/services/firebase_services.dart';
 import 'package:smart_bin_sense/views/bins_around_you.dart';
+import 'package:smart_bin_sense/views/collection_schedule_screen.dart';
 import 'package:smart_bin_sense/views/complaints_screen.dart';
-import 'package:smart_bin_sense/widgets/home_card/custom_home_card.dart';
-import 'package:smart_bin_sense/widgets/profile_card/custom_profile_card.dart';
+import 'package:smart_bin_sense/views/helpline_screen.dart';
 
 import '../widgets/appbar/custom_appbar_location.dart';
+import '../widgets/home/custom_home_card.dart';
+import '../widgets/profile/custom_profile_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -73,7 +76,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       customHomeCard(
                           image: "assets/images/track_truck.png",
                           title: "Track Garbage Truck",
-                          voidCallback: () {}),
+                          voidCallback: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ChooseAndTrackTruck(),
+                              ),
+                            );
+                          }),
                       customHomeCard(
                           image: "assets/images/complaints.png",
                           title: "Complaints",
@@ -100,15 +111,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       customHomeCard(
                           image: "assets/images/schedule.png",
                           title: "Collection Schedule",
-                          voidCallback: () {}),
-                      customHomeCard(
-                          image: "assets/images/events_reminder.png",
-                          title: "Events and Reminders",
-                          voidCallback: () {}),
+                          voidCallback: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const CollectionScheduleScreen(),
+                              ),
+                            );
+                          }),
                       customHomeCard(
                           image: "assets/images/helpline.png",
                           title: "Helpline",
-                          voidCallback: () {}),
+                          voidCallback: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const HelplineScreen()));
+                          }),
                     ],
                   ),
                 ),

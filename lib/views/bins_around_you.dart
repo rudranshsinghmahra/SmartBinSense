@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:smart_bin_sense/services/firebase_services.dart';
 import 'package:smart_bin_sense/widgets/appbar/customAppbarOnlyTitle.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,10 +19,13 @@ class _BinsAroundYouState extends State<BinsAroundYou> {
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
   List<LatLng> binsLocationList = [];
   Set<Marker> markers = {};
+  final Location _locationController = Location();
+  late StreamSubscription<LocationData> _locationSubscription;
 
   @override
   void initState() {
     addCustomIcon();
+    getLocationUpdates();
     firebaseServices.fetchBins().then((binsList) {
       setState(() {
         binsLocationList = binsList;
@@ -48,6 +54,45 @@ class _BinsAroundYouState extends State<BinsAroundYou> {
     });
   }
 
+  Future<void> getLocationUpdates() async {
+    bool serviceEnabled;
+    PermissionStatus permissionStatus;
+
+    serviceEnabled = await _locationController.serviceEnabled();
+    if (serviceEnabled) {
+      serviceEnabled = await _locationController.requestService();
+    } else {
+      return;
+    }
+
+    permissionStatus = await _locationController.hasPermission();
+    if (permissionStatus == PermissionStatus.denied) {
+      permissionStatus = await _locationController.requestPermission();
+      if (permissionStatus != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _locationSubscription = _locationController.onLocationChanged
+        .listen((LocationData currentLocation) {
+      if (currentLocation.latitude != null &&
+          currentLocation.longitude != null) {
+        if (mounted) {
+          setState(() {
+            initialPosition =
+                LatLng(currentLocation.latitude!, currentLocation.longitude!);
+          });
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _locationSubscription.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -60,6 +105,8 @@ class _BinsAroundYouState extends State<BinsAroundYou> {
           children: [
             Expanded(
               child: GoogleMap(
+                myLocationEnabled: true,
+                myLocationButtonEnabled: true,
                 initialCameraPosition:
                     CameraPosition(target: initialPosition, zoom: 15),
                 markers: markers,

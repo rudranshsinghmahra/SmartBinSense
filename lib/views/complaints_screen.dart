@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_bin_sense/widgets/appbar/customAppbarOnlyTitle.dart';
 
-import '../widgets/complaints_card/customComplaintCard.dart';
-import '../widgets/complaints_card/customLatestComplaintCard.dart';
+import '../widgets/complaints/customComplaintCard.dart';
+import '../widgets/complaints/customLatestComplaintCard.dart';
 import 'file_complaint_screen.dart';
 
 class ComplaintScreen extends StatefulWidget {

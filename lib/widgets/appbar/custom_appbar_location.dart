@@ -54,10 +54,13 @@ Widget customAppBarLocation(TextEditingController searchTextEditingController) {
                   )
                 ],
               ),
-              const Icon(
-                Icons.notifications_outlined,
-                color: Colors.white,
-                size: 33,
+              const Badge(
+                label: Text("2"),
+                child: Icon(
+                  Icons.notifications_outlined,
+                  color: Colors.white,
+                  size: 33,
+                ),
               )
             ],
           ),

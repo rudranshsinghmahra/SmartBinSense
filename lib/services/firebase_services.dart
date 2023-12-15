@@ -12,6 +12,10 @@ import 'package:smart_bin_sense/views/otp_verify_screen.dart';
 class FirebaseServices {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   CollectionReference bins = FirebaseFirestore.instance.collection("bins");
+  CollectionReference schedule =
+      FirebaseFirestore.instance.collection("schedule");
+  CollectionReference helpline =
+      FirebaseFirestore.instance.collection("helpline");
 
   Future<void> verifyPhoneNumber(
       String phoneNumber, BuildContext context) async {
@@ -93,5 +97,16 @@ class FirebaseServices {
       print("Error fetching data: $e");
     }
     return binsLocationList;
+  }
+
+  Future<void> addContactToDatabase(String name, String phoneNumber) async {
+    await helpline.doc().set({
+      "name": name.trim(),
+      "phoneNumber": phoneNumber.trim(),
+    });
+  }
+
+  Future<void> deleteContactFromDatabase(String docId) async {
+    await helpline.doc(docId).delete();
   }
 }
