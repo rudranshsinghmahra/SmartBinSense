@@ -36,8 +36,8 @@ class _HelplineScreenState extends State<HelplineScreen> {
             stream: firebaseServices.helpline
                 .orderBy("name", descending: false)
                 .snapshots(),
-            builder: (BuildContext context,
-                AsyncSnapshot<QuerySnapshot> snapshot) {
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -52,8 +52,7 @@ class _HelplineScreenState extends State<HelplineScreen> {
 
               return ListView(
                 shrinkWrap: true,
-                children:
-                    snapshot.data!.docs.map((DocumentSnapshot document) {
+                children: snapshot.data!.docs.map((DocumentSnapshot document) {
                   Map<String, dynamic> data =
                       document.data()! as Map<String, dynamic>;
                   return customHelplineCardOne(
