@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Widget customLatestComplaintCard(String image, String title) {
+Widget customLatestComplaintCard(String image, String title,String location) {
   return SizedBox(
     height: 220,
     width: 250,
@@ -13,7 +13,10 @@ Widget customLatestComplaintCard(String image, String title) {
         borderRadius: BorderRadius.circular(15),
         child: Column(
           children: [
-            Image.asset(image, fit: BoxFit.fill),
+            SizedBox(
+                height: 160,
+                width: double.infinity,
+                child: Image.network(image, fit: BoxFit.fill)),
             Padding(
               padding: const EdgeInsets.only(top: 4.0),
               child: Text(
@@ -33,7 +36,7 @@ Widget customLatestComplaintCard(String image, String title) {
                   Padding(
                     padding: const EdgeInsets.only(left: 3.0),
                     child: Text(
-                      "Gali no. 33,Jacobpur Rd, Gurugram",
+                      location,
                       style: GoogleFonts.nunito(fontSize: 12),
                       overflow: TextOverflow.ellipsis,
                     ),

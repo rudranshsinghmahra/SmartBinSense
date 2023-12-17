@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:smart_bin_sense/views/log_in_screen.dart';
 import 'package:smart_bin_sense/views/otp_verify_screen.dart';
 
@@ -16,6 +20,9 @@ class FirebaseServices {
       FirebaseFirestore.instance.collection("schedule");
   CollectionReference helpline =
       FirebaseFirestore.instance.collection("helpline");
+  CollectionReference complaint =
+      FirebaseFirestore.instance.collection("complaint");
+  User? user = FirebaseAuth.instance.currentUser;
 
   Future<void> verifyPhoneNumber(
       String phoneNumber, BuildContext context) async {
@@ -103,10 +110,41 @@ class FirebaseServices {
     await helpline.doc().set({
       "name": name.trim(),
       "phoneNumber": phoneNumber.trim(),
+      "userId": user?.uid,
     });
   }
 
   Future<void> deleteContactFromDatabase(String docId) async {
     await helpline.doc(docId).delete();
+  }
+
+  Future<void> addComplaintToDatabase(String location, String category,
+      String description, String imageUrl) async {
+    await complaint.doc().set({
+      "location": location.trim(),
+      "category": category.trim(),
+      "description": description,
+      "imageUrl": imageUrl,
+      "userId": user?.uid,
+    });
+  }
+
+  Future<String?> uploadImageToStorage(XFile? image) async {
+    try {
+      if (image != null) {
+        final Reference storageRef = FirebaseStorage.instance.ref().child(
+              'complaint_images/${DateTime.now().millisecondsSinceEpoch}.jpg',
+            );
+
+        await storageRef.putFile(File(image.path));
+
+        final String downloadURL = await storageRef.getDownloadURL();
+
+        return downloadURL;
+      }
+    } catch (e) {
+      print("Error uploading image to Firebase Storage: $e");
+    }
+    return null;
   }
 }

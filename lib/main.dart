@@ -12,7 +12,8 @@ void main() async {
           apiKey: "AIzaSyBxvxeQaz9duSs-855uqI4hKAJl7DCe7xk",
           appId: "1:677800212738:android:ea590ee9dbf3d678666a1b",
           messagingSenderId: "677800212738",
-          projectId: "smartbinsense-caa15"));
+          projectId: "smartbinsense-caa15",
+          storageBucket: 'smartbinsense-caa15.appspot.com'));
   runApp(const MyApp());
 }
 

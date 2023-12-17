@@ -32,34 +32,37 @@ class _HelplineScreenState extends State<HelplineScreen> {
       body: Column(
         children: [
           Expanded(
-              child: StreamBuilder(
-            stream: firebaseServices.helpline
-                .orderBy("name", descending: false)
-                .snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+            child: StreamBuilder(
+              stream: firebaseServices.helpline
+                  .where('userId', isEqualTo: firebaseServices.user?.uid)
+                  .orderBy("name", descending: false)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
-              return ListView(
-                children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                  Map<String, dynamic> data =
-                      document.data()! as Map<String, dynamic>;
-                  return customHelplineCard(
-                      data['name'], Icons.person, document.id);
-                }).toList(),
-              );
-            },
-          )),
+                return ListView(
+                  children:
+                      snapshot.data!.docs.map((DocumentSnapshot document) {
+                    Map<String, dynamic> data =
+                        document.data()! as Map<String, dynamic>;
+                    return customHelplineCard(
+                        data['name'], Icons.person, document.id);
+                  }).toList(),
+                );
+              },
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(

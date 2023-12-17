@@ -17,8 +17,8 @@ class CollectionScheduleScreen extends StatefulWidget {
 
 class _CollectionScheduleScreenState extends State<CollectionScheduleScreen> {
   FirebaseServices firebaseServices = FirebaseServices();
-  String? locationDropdownValue;
-  String? docName;
+  String? locationDropdownValue = 'Delhi NCR';
+  String? docName = 'delhi_ncr';
   List<String> locationList = [
     'Delhi NCR',
     'Hyderabad',

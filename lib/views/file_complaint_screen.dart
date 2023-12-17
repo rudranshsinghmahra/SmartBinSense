@@ -1,5 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:smart_bin_sense/constants.dart';
+import 'package:smart_bin_sense/services/firebase_services.dart';
 import 'package:smart_bin_sense/views/complaintFiledSuccess.dart';
 import 'package:smart_bin_sense/widgets/appbar/customAppbarOnlyTitle.dart';
 
@@ -13,6 +17,12 @@ class FileComplaintScreen extends StatefulWidget {
 class _FileComplaintScreenState extends State<FileComplaintScreen> {
   String? locationDropdownValue;
   String? categoryDropdownValue;
+  String? selectedLocation;
+  String? selectedCategory;
+  TextEditingController descriptionController = TextEditingController();
+  FirebaseServices firebaseServices = FirebaseServices();
+  XFile? _image;
+
   List<String> locationList = [
     'Delhi NCR',
     'Hyderabad',
@@ -33,6 +43,51 @@ class _FileComplaintScreenState extends State<FileComplaintScreen> {
     "Sweeping not done",
     "Open Defecation",
   ];
+
+  Future<void> _pickImage() async {
+    try {
+      final picker = ImagePicker();
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.camera),
+                title: const Text('Take a photo'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final pickedImage =
+                  await picker.pickImage(source: ImageSource.camera);
+                  if (pickedImage != null) {
+                    setState(() {
+                      _image = pickedImage;
+                    });
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.image),
+                title: const Text('Choose from gallery'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final pickedImage =
+                  await picker.pickImage(source: ImageSource.gallery);
+                  if (pickedImage != null) {
+                    setState(() {
+                      _image = pickedImage;
+                    });
+                  }
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      print("Error picking image: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +152,7 @@ class _FileComplaintScreenState extends State<FileComplaintScreen> {
                             onChanged: (String? value) {
                               setState(() {
                                 locationDropdownValue = value!;
+                                selectedLocation = locationDropdownValue;
                               });
                             })
                       ],
@@ -144,6 +200,7 @@ class _FileComplaintScreenState extends State<FileComplaintScreen> {
                           onChanged: (String? value) {
                             setState(() {
                               categoryDropdownValue = value!;
+                              selectedCategory = categoryDropdownValue;
                             });
                           },
                         )
@@ -186,6 +243,7 @@ class _FileComplaintScreenState extends State<FileComplaintScreen> {
                 children: [
                   Expanded(
                       child: TextField(
+                    controller: descriptionController,
                     maxLines: 3,
                     style: GoogleFonts.nunito(),
                   ))
@@ -196,15 +254,30 @@ class _FileComplaintScreenState extends State<FileComplaintScreen> {
                 child: Center(
                   child: Column(
                     children: [
-                      const Icon(
-                        Icons.camera_alt,
-                        size: 80,
-                        color: Color(0xfffbb700),
+                      GestureDetector(
+                        onTap: () {
+                          _pickImage();
+                        },
+                        child: _image == null
+                            ? const Icon(
+                                Icons.camera_alt,
+                                size: 80,
+                                color: Color(0xfffbb700),
+                              )
+                            : SizedBox(
+                                width: double.infinity,
+                                height: 200,
+                                child: Image.file(
+                                  File(_image!.path),
+                                  fit: BoxFit.fill,
+                                )),
                       ),
-                      Text(
-                        "Upload picture",
-                        style: GoogleFonts.nunito(fontWeight: FontWeight.bold),
-                      )
+                      if (_image == null)
+                        Text(
+                          "Upload picture",
+                          style:
+                              GoogleFonts.nunito(fontWeight: FontWeight.bold),
+                        )
                     ],
                   ),
                 ),
@@ -214,11 +287,36 @@ class _FileComplaintScreenState extends State<FileComplaintScreen> {
                   padding: const EdgeInsets.only(top: 20.0),
                   child: ElevatedButton(
                       onPressed: () {
-                        Navigator.popUntil(context, (route) => route.isFirst);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const ComplaintFiledSuccessScreen()),
-                        );
+                        if (selectedCategory != null &&
+                            selectedLocation != null &&
+                            descriptionController.text.isNotEmpty &&
+                            _image != null) {
+                          firebaseServices
+                              .uploadImageToStorage(_image)
+                              .then((imageUrl) {
+                            if (imageUrl != null) {
+                              firebaseServices
+                                  .addComplaintToDatabase(
+                                      selectedLocation.toString(),
+                                      selectedCategory.toString(),
+                                      descriptionController.text,
+                                      imageUrl)
+                                  .then((value) {
+                                showCustomToast("Complaint filed successfully");
+                                Navigator.popUntil(
+                                    context, (route) => route.isFirst);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ComplaintFiledSuccessScreen()),
+                                );
+                              });
+                            }
+                          });
+                        }else{
+                          showCustomToast("Provide the required details");
+                        }
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 38.0),

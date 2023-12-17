@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Widget customComplaintCard(
-    String title, VoidCallback voidCallback, bool showNumber) {
+Widget customComplaintCard(String title, VoidCallback voidCallback,
+    bool showNumber, int numberOfComplaints) {
   return GestureDetector(
     onTap: voidCallback,
     child: Padding(
@@ -38,10 +38,16 @@ Widget customComplaintCard(
                             borderRadius: BorderRadius.circular(5)),
                         child: Padding(
                           padding: const EdgeInsets.all(2.5),
-                          child: Text(
-                            "03",
-                            style: GoogleFonts.nunito(),
-                          ),
+                          child:
+                              numberOfComplaints == 0 || numberOfComplaints > 9
+                                  ? Text(
+                                      numberOfComplaints.toString(),
+                                      style: GoogleFonts.nunito(),
+                                    )
+                                  : Text(
+                                      "0${numberOfComplaints.toString()}",
+                                      style: GoogleFonts.nunito(),
+                                    ),
                         ),
                       ),
                     )
