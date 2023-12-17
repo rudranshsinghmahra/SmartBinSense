@@ -5,7 +5,7 @@ import 'package:smart_bin_sense/services/firebase_services.dart';
 
 FirebaseServices firebaseServices = FirebaseServices();
 
-Widget customHelplineCard(String title, IconData icon, String docId) {
+Widget customHelplineCardTwo(String title, IconData icon, String docId) {
   return Card(
     child: Padding(
       padding: const EdgeInsets.all(8.0),

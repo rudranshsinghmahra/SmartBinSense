@@ -20,6 +20,8 @@ class FirebaseServices {
       FirebaseFirestore.instance.collection("schedule");
   CollectionReference helpline =
       FirebaseFirestore.instance.collection("helpline");
+  CollectionReference customContact =
+  FirebaseFirestore.instance.collection("customContact");
   CollectionReference complaint =
       FirebaseFirestore.instance.collection("complaint");
   User? user = FirebaseAuth.instance.currentUser;
@@ -106,8 +108,8 @@ class FirebaseServices {
     return binsLocationList;
   }
 
-  Future<void> addContactToDatabase(String name, String phoneNumber) async {
-    await helpline.doc().set({
+  Future<void> addCustomContactToDatabase(String name, String phoneNumber) async {
+    await customContact.doc().set({
       "name": name.trim(),
       "phoneNumber": phoneNumber.trim(),
       "userId": user?.uid,
@@ -115,7 +117,7 @@ class FirebaseServices {
   }
 
   Future<void> deleteContactFromDatabase(String docId) async {
-    await helpline.doc(docId).delete();
+    await customContact.doc(docId).delete();
   }
 
   Future<void> addComplaintToDatabase(String location, String category,

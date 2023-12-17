@@ -7,8 +7,9 @@ import 'package:smart_bin_sense/colors.dart';
 import 'package:smart_bin_sense/constants.dart';
 import 'package:smart_bin_sense/services/firebase_services.dart';
 import 'package:smart_bin_sense/widgets/appbar/customAppbarOnlyTitle.dart';
+import 'package:smart_bin_sense/widgets/helpline/customHelplineCardTwo.dart';
 
-import '../widgets/helpline/customHelplineCard.dart';
+import '../widgets/helpline/customHelplineCardOne.dart';
 
 class HelplineScreen extends StatefulWidget {
   const HelplineScreen({super.key});
@@ -31,9 +32,39 @@ class _HelplineScreenState extends State<HelplineScreen> {
           child: customAppbarOnlyTitle("Helpline", context)),
       body: Column(
         children: [
+          StreamBuilder(
+            stream: firebaseServices.helpline
+                .orderBy("name", descending: false)
+                .snapshots(),
+            builder: (BuildContext context,
+                AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              return ListView(
+                shrinkWrap: true,
+                children:
+                    snapshot.data!.docs.map((DocumentSnapshot document) {
+                  Map<String, dynamic> data =
+                      document.data()! as Map<String, dynamic>;
+                  return customHelplineCardOne(
+                      data['name'], Icons.person, document.id);
+                }).toList(),
+              );
+            },
+          ),
           Expanded(
             child: StreamBuilder(
-              stream: firebaseServices.helpline
+              stream: firebaseServices.customContact
                   .where('userId', isEqualTo: firebaseServices.user?.uid)
                   .orderBy("name", descending: false)
                   .snapshots(),
@@ -56,7 +87,7 @@ class _HelplineScreenState extends State<HelplineScreen> {
                       snapshot.data!.docs.map((DocumentSnapshot document) {
                     Map<String, dynamic> data =
                         document.data()! as Map<String, dynamic>;
-                    return customHelplineCard(
+                    return customHelplineCardTwo(
                         data['name'], Icons.person, document.id);
                   }).toList(),
                 );
@@ -149,6 +180,7 @@ Future<void> showCustomDialogBox(
                           child: TextField(
                             keyboardType: TextInputType.number,
                             controller: phoneController,
+                            maxLength: 10,
                             decoration: InputDecoration(
                               labelText: "Enter phone number",
                               border: const OutlineInputBorder(),
@@ -167,7 +199,7 @@ Future<void> showCustomDialogBox(
                         child: ElevatedButton(
                           onPressed: () {
                             firebaseServices
-                                .addContactToDatabase(
+                                .addCustomContactToDatabase(
                                     nameController.text.trim(),
                                     phoneController.text.trim())
                                 .then((value) {
