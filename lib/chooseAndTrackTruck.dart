@@ -4,6 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_bin_sense/views/maps_receiver.dart';
 import 'package:smart_bin_sense/widgets/appbar/customAppbarOnlyTitle.dart';
+import 'package:smart_bin_sense/widgets/truck_driver/truckDriverCustomCard.dart';
 
 class ChooseAndTrackTruck extends StatefulWidget {
   const ChooseAndTrackTruck({super.key});
@@ -14,18 +15,11 @@ class ChooseAndTrackTruck extends StatefulWidget {
 
 class _ChooseAndTrackTruckState extends State<ChooseAndTrackTruck> {
   static final databaseReference = FirebaseDatabase.instance.ref();
-
-  static double currentLatitude = 0.0;
-  static double currentLongitude = 0.0;
-
   StreamSubscription? subscription;
-
   Map<String, double> currentLocation = {};
   StreamSubscription<Map<String, double>>? locationSubscription;
   String? error;
-
   String deviceId = 'Unknown';
-
   List<String> list = [];
 
   @override
@@ -57,35 +51,35 @@ class _ChooseAndTrackTruckState extends State<ChooseAndTrackTruck> {
         preferredSize: const Size.fromHeight(70),
         child: customAppbarOnlyTitle("Track Garbage Truck", context),
       ),
-      body: Column(
-        children: [
-          Expanded(
-              child: ListView.builder(
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MapsReceiver(
-                              deviceId: list[index],
+      body: list.isNotEmpty
+          ? Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MapsReceiver(
+                                deviceId: list[index],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                      child: Card(
-                        child: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          height: 50,
-                          width: 240,
-                          child: Text('Device ID : ${list[index]}'),
+                          );
+                        },
+                        child: truckDriverCustomCard(
+                          context,
+                          list[index],
                         ),
-                      ),
-                    );
-                  },
-                  itemCount: list.length))
-        ],
-      ),
+                      );
+                    },
+                    itemCount: list.length,
+                  ),
+                )
+              ],
+            )
+          : const Center(child: CircularProgressIndicator()),
     ));
   }
 }
