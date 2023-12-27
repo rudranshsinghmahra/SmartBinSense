@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_bin_sense/constants.dart';
 import 'package:smart_bin_sense/views/log_in_screen.dart';
 import 'package:smart_bin_sense/views/otp_verify_screen.dart';
 
@@ -21,7 +22,7 @@ class FirebaseServices {
   CollectionReference helpline =
       FirebaseFirestore.instance.collection("helpline");
   CollectionReference customContact =
-  FirebaseFirestore.instance.collection("customContact");
+      FirebaseFirestore.instance.collection("customContact");
   CollectionReference complaint =
       FirebaseFirestore.instance.collection("complaint");
   User? user = FirebaseAuth.instance.currentUser;
@@ -35,9 +36,7 @@ class FirebaseServices {
       },
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {
-          if (kDebugMode) {
-            print('The provided phone number is not valid.');
-          }
+          print('The provided phone number is not valid.');
         }
       },
       codeSent: (String verificationId, int? resendToken) async {
@@ -57,13 +56,7 @@ class FirebaseServices {
 
   Future<void> logOut(BuildContext context) async {
     await firebaseAuth.signOut().then((value) => {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(
-              "Logout successful. See you again!",
-              style: GoogleFonts.nunito(color: Colors.black),
-            ),
-            backgroundColor: Colors.grey.shade400,
-          )),
+          showCustomToast("Logout successful. See you again!"),
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const LogInScreen()))
         });
@@ -108,7 +101,8 @@ class FirebaseServices {
     return binsLocationList;
   }
 
-  Future<void> addCustomContactToDatabase(String name, String phoneNumber) async {
+  Future<void> addCustomContactToDatabase(
+      String name, String phoneNumber) async {
     await customContact.doc().set({
       "name": name.trim(),
       "phoneNumber": phoneNumber.trim(),
