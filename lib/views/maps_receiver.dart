@@ -112,6 +112,7 @@ class MapsReceiverState extends State<MapsReceiver> {
               width: double.infinity,
               height: 350.0,
               child: GoogleMap(
+                mapType: MapType.satellite,
                 markers: markers,
                 initialCameraPosition: CameraPosition(
                     target: LatLng(currentLatitude, currentLongitude),

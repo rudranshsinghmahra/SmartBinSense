@@ -86,10 +86,8 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                 keyboardType: TextInputType.number,
                 onCompleted: (v) async {
                   debugPrint("Completed");
-
                   //To prevent build_context warning
                   Completer<void> completer = Completer<void>();
-
                   try {
                     PhoneAuthCredential phoneAuthCredential =
                         PhoneAuthProvider.credential(

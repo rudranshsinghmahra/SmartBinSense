@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_bin_sense/colors.dart';
 import 'package:smart_bin_sense/services/firebase_services.dart';
-import 'package:smart_bin_sense/views/otp_verify_screen.dart';
 
 import 'onboarding_screen.dart';
 

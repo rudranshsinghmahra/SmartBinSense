@@ -14,7 +14,7 @@ Widget customHomeCard(
       shadowColor: primary.shade600,
       child: Column(
         children: [
-          SizedBox(height: 140, width: 140, child: Image.asset(image)),
+          SizedBox(height: 120, width: 120, child: Image.asset(image)),
           Text(
             title,
             style: GoogleFonts.roboto(

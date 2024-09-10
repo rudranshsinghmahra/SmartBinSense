@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:smart_bin_sense/colors.dart';
 import 'package:smart_bin_sense/views/home_screen.dart';
-import 'package:smart_bin_sense/views/splash_screen.dart';
 
 class OnBoardingScreenOne extends StatefulWidget {
   const OnBoardingScreenOne({super.key});

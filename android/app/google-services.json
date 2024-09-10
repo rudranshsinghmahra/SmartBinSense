@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "677800212738",
+    "firebase_url": "https://smartbinsense-caa15-default-rtdb.firebaseio.com",
     "project_id": "smartbinsense-caa15",
     "storage_bucket": "smartbinsense-caa15.appspot.com"
   },
@@ -14,11 +15,48 @@
       },
       "oauth_client": [
         {
-          "client_id": "677800212738-1c5rfumtp8gk7m518tblm8d4u5dju6o2.apps.googleusercontent.com",
+          "client_id": "677800212738-amoplobiqjrp34phjusqudggomoncl81.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.rudransh.smart_bin_sense",
-            "certificate_hash": "f9653b4e59bfda4433d608ca932dfc7dc73a490a"
+            "certificate_hash": "d75a1b943848605cf310ccd2270f397d100654a7"
+          }
+        },
+        {
+          "client_id": "677800212738-qgtquje47gc5ipkbpjrhl2rjdfa5fmci.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCONXTAMR9AzGuu2LyI8vfmpHoAjxORGKw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "677800212738-qgtquje47gc5ipkbpjrhl2rjdfa5fmci.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:677800212738:android:9341cfbed3a5f1fd666a1b",
+        "android_client_info": {
+          "package_name": "com.rudransh.smart_bin_sense_driver_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "677800212738-hg76a53qle74sb1vihk4dvomnuh2va93.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rudransh.smart_bin_sense_driver_app",
+            "certificate_hash": "d75a1b943848605cf310ccd2270f397d100654a7"
           }
         },
         {

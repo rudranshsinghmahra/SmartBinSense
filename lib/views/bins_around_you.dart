@@ -106,6 +106,7 @@ class _BinsAroundYouState extends State<BinsAroundYou> {
             Expanded(
               child: GoogleMap(
                 myLocationEnabled: true,
+                mapType: MapType.satellite,
                 myLocationButtonEnabled: true,
                 initialCameraPosition:
                     CameraPosition(target: initialPosition, zoom: 15),

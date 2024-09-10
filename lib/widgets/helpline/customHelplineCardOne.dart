@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smart_bin_sense/constants.dart';
 import 'package:smart_bin_sense/services/firebase_services.dart';
 
 FirebaseServices firebaseServices = FirebaseServices();

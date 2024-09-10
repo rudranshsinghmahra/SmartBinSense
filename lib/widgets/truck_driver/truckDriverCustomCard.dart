@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Widget truckDriverCustomCard(BuildContext context, String deviceId) {
+Widget truckDriverCustomCard({
+  required BuildContext context,
+  required String deviceId,
+  required String name,
+  required String plateNumber,
+  required String phoneNumber,
+  required String homeAddress,
+  required String imageUrl,
+}) {
   return Card(
     elevation: 8,
     shape: RoundedRectangleBorder(
@@ -33,6 +41,15 @@ Widget truckDriverCustomCard(BuildContext context, String deviceId) {
                             offset: Offset(-0.2, 0.2),
                             blurRadius: 3)
                       ]),
+                  child: imageUrl == ""
+                      ? const Icon(
+                          Icons.person,
+                          size: 70,
+                        )
+                      : Image.network(
+                          imageUrl.toString(),
+                          fit: BoxFit.fill,
+                        ),
                 ),
               ),
               Expanded(
@@ -56,7 +73,7 @@ Widget truckDriverCustomCard(BuildContext context, String deviceId) {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              'Tinku Chacha',
+                              name,
                               style: GoogleFonts.nunito(
                                 fontWeight: FontWeight.normal,
                                 color: Colors.grey,
@@ -70,11 +87,11 @@ Widget truckDriverCustomCard(BuildContext context, String deviceId) {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Reg. ID:',
+                            Text('Plate Number:',
                                 style: GoogleFonts.nunito(
                                     fontWeight: FontWeight.bold)),
                             Text(
-                              'Truck Driver',
+                              plateNumber,
                               style: GoogleFonts.nunito(
                                 fontWeight: FontWeight.normal,
                                 color: Colors.grey,
@@ -109,7 +126,7 @@ Widget truckDriverCustomCard(BuildContext context, String deviceId) {
             children: <Widget>[
               const Icon(Icons.phone),
               const SizedBox(width: 10),
-              Text('+1234567890',
+              Text(phoneNumber,
                   style: GoogleFonts.nunito(fontWeight: FontWeight.bold)),
             ],
           ),
@@ -119,7 +136,7 @@ Widget truckDriverCustomCard(BuildContext context, String deviceId) {
             children: <Widget>[
               const Icon(Icons.location_on),
               const SizedBox(width: 10),
-              Text('Punjab, India',
+              Text(homeAddress,
                   style: GoogleFonts.nunito(fontWeight: FontWeight.bold)),
             ],
           ),
