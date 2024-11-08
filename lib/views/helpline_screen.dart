@@ -24,46 +24,17 @@ class _HelplineScreenState extends State<HelplineScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(70),
-          child: customAppbarOnlyTitle("Helpline", context)),
-      body: Column(
-        children: [
-          StreamBuilder(
-            stream: firebaseServices.helpline
-                .orderBy("name", descending: false)
-                .snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-
-              return ListView(
-                shrinkWrap: true,
-                children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                  Map<String, dynamic> data =
-                      document.data()! as Map<String, dynamic>;
-                  return customHelplineCardOne(
-                      data['name'], Icons.person, document.id);
-                }).toList(),
-              );
-            },
-          ),
-          Expanded(
-            child: StreamBuilder(
-              stream: firebaseServices.customContact
-                  .where('userId', isEqualTo: firebaseServices.user?.uid)
+    return Container(
+      color: const Color(0xff5c964a),
+      child: SafeArea(
+          child: Scaffold(
+        appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(70),
+            child: customAppbarOnlyTitle("Helpline", context)),
+        body: Column(
+          children: [
+            StreamBuilder(
+              stream: firebaseServices.helpline
                   .orderBy("name", descending: false)
                   .snapshots(),
               builder: (BuildContext context,
@@ -81,46 +52,83 @@ class _HelplineScreenState extends State<HelplineScreen> {
                 }
 
                 return ListView(
+                  shrinkWrap: true,
                   children:
                       snapshot.data!.docs.map((DocumentSnapshot document) {
                     Map<String, dynamic> data =
                         document.data()! as Map<String, dynamic>;
-                    return customHelplineCardTwo(
-                        data['name'], Icons.person, document.id);
+                    return customHelplineCardOne(
+                        data['name'],
+                        data['phoneNumber'],
+                        Icons.person,
+                        document.id,
+                        context);
                   }).toList(),
                 );
               },
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    if (kDebugMode) {
-                      print("Hello");
-                    }
-                    showCustomDialogBox(context, nameController,
-                        phoneController, firebaseServices);
-                  },
-                  child: const Icon(
-                    Icons.person_add,
-                    color: Color(0xffffb900),
-                    size: 50,
-                  ),
-                ),
-                Text(
-                  "Add new contact",
-                  style: GoogleFonts.nunito(
-                      fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-              ],
+            Expanded(
+              child: StreamBuilder(
+                stream: firebaseServices.customContact
+                    .where('userId', isEqualTo: firebaseServices.user?.uid)
+                    .orderBy("name", descending: false)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  return ListView(
+                    children:
+                        snapshot.data!.docs.map((DocumentSnapshot document) {
+                      Map<String, dynamic> data =
+                          document.data()! as Map<String, dynamic>;
+                      return customHelplineCardTwo(data['name'],
+                          data['phoneNumber'], Icons.person, document.id,context);
+                    }).toList(),
+                  );
+                },
+              ),
             ),
-          )
-        ],
-      ),
-    ));
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      if (kDebugMode) {
+                        print("Hello");
+                      }
+                      showCustomDialogBox(context, nameController,
+                          phoneController, firebaseServices);
+                    },
+                    child: const Icon(
+                      Icons.person_add,
+                      color: Color(0xffffb900),
+                      size: 50,
+                    ),
+                  ),
+                  Text(
+                    "Add new contact",
+                    style: GoogleFonts.nunito(
+                        fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      )),
+    );
   }
 }
 

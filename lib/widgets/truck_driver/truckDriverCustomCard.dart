@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shimmer/shimmer.dart';
 
 Widget truckDriverCustomCard({
   required BuildContext context,
@@ -46,9 +48,20 @@ Widget truckDriverCustomCard({
                           Icons.person,
                           size: 70,
                         )
-                      : Image.network(
-                          imageUrl.toString(),
-                          fit: BoxFit.fill,
+                      : CachedNetworkImage(
+                          imageUrl: imageUrl.toString(),
+                          placeholder: (context, url) => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              width: 80, // Set desired width
+                              height: 80, // Set desired height
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          fit: BoxFit.cover,
                         ),
                 ),
               ),

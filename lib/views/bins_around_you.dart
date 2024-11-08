@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:smart_bin_sense/services/firebase_services.dart';
@@ -21,6 +20,8 @@ class _BinsAroundYouState extends State<BinsAroundYou> {
   Set<Marker> markers = {};
   final Location _locationController = Location();
   late StreamSubscription<LocationData> _locationSubscription;
+  late GoogleMapController _mapController;
+  bool fetchingLocation = false;
 
   @override
   void initState() {
@@ -59,18 +60,15 @@ class _BinsAroundYouState extends State<BinsAroundYou> {
     PermissionStatus permissionStatus;
 
     serviceEnabled = await _locationController.serviceEnabled();
-    if (serviceEnabled) {
+    if (!serviceEnabled) {
       serviceEnabled = await _locationController.requestService();
-    } else {
-      return;
+      if (!serviceEnabled) return;
     }
 
     permissionStatus = await _locationController.hasPermission();
     if (permissionStatus == PermissionStatus.denied) {
       permissionStatus = await _locationController.requestPermission();
-      if (permissionStatus != PermissionStatus.granted) {
-        return;
-      }
+      if (permissionStatus != PermissionStatus.granted) return;
     }
 
     _locationSubscription = _locationController.onLocationChanged
@@ -87,6 +85,27 @@ class _BinsAroundYouState extends State<BinsAroundYou> {
     });
   }
 
+  void _goToCurrentLocation() async {
+    setState(() {
+      fetchingLocation = true;
+    });
+
+    try {
+      final LocationData location = await _locationController.getLocation();
+      _mapController.animateCamera(
+        CameraUpdate.newLatLng(
+          LatLng(location.latitude!, location.longitude!),
+        ),
+      );
+    } catch (e) {
+      print("Error getting location: $e");
+    } finally {
+      setState(() {
+        fetchingLocation = false;
+      });
+    }
+  }
+
   @override
   void dispose() {
     _locationSubscription.cancel();
@@ -95,25 +114,47 @@ class _BinsAroundYouState extends State<BinsAroundYou> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(70),
-          child: customAppbarOnlyTitle("Bins around you", context),
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: GoogleMap(
+    return Container(
+      color: const Color(0xff5c964a),
+      child: SafeArea(
+        child: Scaffold(
+          body: Stack(
+            children: [
+              GoogleMap(
+                onMapCreated: (controller) {
+                  _mapController = controller;
+                },
                 myLocationEnabled: true,
                 mapType: MapType.satellite,
-                myLocationButtonEnabled: true,
+                myLocationButtonEnabled: false,
+                // Disable default button
                 initialCameraPosition:
                     CameraPosition(target: initialPosition, zoom: 15),
                 markers: markers,
               ),
-            )
-          ],
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: customAppbarOnlyTitle(
+                  "Bins around you",
+                  context,
+                ),
+              ),
+              Positioned(
+                bottom: 40,
+                left: 16,
+                child: FloatingActionButton(
+                  onPressed: _goToCurrentLocation,
+                  child: fetchingLocation
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : const Icon(Icons.my_location),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

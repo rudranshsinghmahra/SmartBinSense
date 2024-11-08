@@ -19,7 +19,7 @@ Widget customHomeCard(
             title,
             style: GoogleFonts.roboto(
               color: Colors.black,
-              fontSize: 15,
+              fontSize: 13,
               fontWeight: FontWeight.w600,
             ),
             textAlign: TextAlign.center,

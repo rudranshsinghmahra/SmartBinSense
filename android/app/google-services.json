@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "677800212738-amoplobiqjrp34phjusqudggomoncl81.apps.googleusercontent.com",
+          "client_id": "677800212738-34j0q2aept2dsj55ng9jh89cbb07p41c.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.rudransh.smart_bin_sense",
-            "certificate_hash": "d75a1b943848605cf310ccd2270f397d100654a7"
+            "certificate_hash": "e23920d9dc3ef7a38db2c12eac9e80a2c3b74f4f"
           }
         },
         {

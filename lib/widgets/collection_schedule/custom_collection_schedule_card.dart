@@ -47,7 +47,7 @@ Widget customCollectionScheduleCard(
             children: [
               const Text(" "),
               Text(
-                DateFormat('h:mm a').format(formattedDateTime),
+                DateFormat('hh:mm a').format(formattedDateTime),
                 style: GoogleFonts.nunito(
                     color: isToday ? Colors.white : Colors.grey.shade600,
                     fontSize: 14,

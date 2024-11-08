@@ -44,7 +44,9 @@ class _SplashScreenState extends State<SplashScreen> {
           const Text(
             "SmartBinSense",
             style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 29, color: Colors.white),
+                fontWeight: FontWeight.bold,
+                fontSize: 29,
+                color: Colors.white),
           ),
           Text(
             "Revolutionizing Waste in Your City",
