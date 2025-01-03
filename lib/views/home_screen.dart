@@ -176,6 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             Container(
+                height: MediaQuery.of(context).size.height,
                 color: const Color(0xfff1f0f3),
                 child: SingleChildScrollView(
                   child: Padding(
@@ -206,12 +207,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
                               return const Center(
-                                child: CircularProgressIndicator(),
+                                child: Padding(
+                                  padding: EdgeInsets.all(50.0),
+                                  child: CircularProgressIndicator(),
+                                ),
                               );
                             }
                             if (!snapshot.hasData) {
                               return const Center(
-                                  child: Text("No blogs available"));
+                                child: Text(
+                                  "No blogs available",
+                                ),
+                              );
                             }
                             if (snapshot.hasData) {
                               return ListView.builder(

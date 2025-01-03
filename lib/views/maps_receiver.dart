@@ -61,8 +61,7 @@ class MapsReceiverState extends State<MapsReceiver> {
       });
     });
 
-    subscription = FirebaseDatabase.instance
-        .ref()
+    subscription = databaseReference
         .child(widget.deviceId)
         .onValue
         .listen((event) {
@@ -124,7 +123,7 @@ class MapsReceiverState extends State<MapsReceiver> {
               children: <Widget>[
                 SizedBox(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.65,
+                  height: MediaQuery.of(context).size.height * 0.63,
                   child: ClipRRect(
                     borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(20),

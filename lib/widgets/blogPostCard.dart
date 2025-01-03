@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shimmer/shimmer.dart';
 
 Widget blogPostCard(
     {required String imageUrl,
@@ -12,8 +14,9 @@ Widget blogPostCard(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           child: Row(
             children: [
               Padding(
@@ -26,8 +29,17 @@ Widget blogPostCard(
                   width: 150,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(30),
-                    child: Image.network(
-                      imageUrl,
+                    child: CachedNetworkImage(
+                      imageUrl: imageUrl.toString(),
+                      placeholder: (context, url) => Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -46,8 +58,7 @@ Widget blogPostCard(
                               fontWeight: FontWeight.bold, fontSize: 20)),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                        child: Text(
-                            description,
+                        child: Text(description,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.nunito(fontSize: 16)),

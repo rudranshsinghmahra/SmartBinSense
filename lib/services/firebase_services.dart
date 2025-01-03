@@ -86,9 +86,9 @@ class FirebaseServices {
     List<LatLng> binsLocationList = [];
     try {
       QuerySnapshot querySnapshot = await bins.get();
-      for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
+      for (QueryDocumentSnapshot queryDocSnapshot in querySnapshot.docs) {
         Map<String, dynamic> data =
-            documentSnapshot.data() as Map<String, dynamic>;
+            queryDocSnapshot.data() as Map<String, dynamic>;
         data.forEach((key, value) {
           if (value is GeoPoint) {
             double latitude = value.latitude;
@@ -266,7 +266,7 @@ class FirebaseServices {
   Future<List<Map<String, dynamic>>> fetchAllBlogs() async {
     try {
       QuerySnapshot querySnapshot =
-      await FirebaseFirestore.instance.collection("blogs").get();
+          await FirebaseFirestore.instance.collection("blogs").get();
 
       // Map each document snapshot to a Map<String, dynamic> and collect them in a list
       List<Map<String, dynamic>> blogs = querySnapshot.docs
@@ -279,5 +279,4 @@ class FirebaseServices {
       return [];
     }
   }
-
 }
