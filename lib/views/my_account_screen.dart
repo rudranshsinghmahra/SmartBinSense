@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_bin_sense/views/home_screen.dart';
 import 'package:smart_bin_sense/widgets/appbar/customAppbarOnlyTitle.dart';
 
 import '../constants.dart';
@@ -192,9 +193,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                     border: const OutlineInputBorder(),
                   ),
                 ),
-                const SizedBox(height: 16),
-                const SizedBox(height: 16),
-                const SizedBox(height: 16),
+                const SizedBox(height: 50),
                 Row(
                   children: [
                     Expanded(
@@ -241,15 +240,28 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                       });
                                       showCustomToast(
                                           "Details uploaded successfully...");
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const HomeScreen(),
+                                        ),
+                                            (route) => false,
+                                      );
                                     });
                                   } else {
                                     showCustomToast("Failed to upload image");
+                                    setState(() {
+                                      isUploadingData = false;
+                                    });
                                   }
                                 });
                               }
                             } else {
                               showCustomToast(
                                   "Please enter the required field(s)");
+                              setState(() {
+                                isUploadingData = false;
+                              });
                             }
                           } catch (e) {
                             print("Error occurred ${e.toString()}");

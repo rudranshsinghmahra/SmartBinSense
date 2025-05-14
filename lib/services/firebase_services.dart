@@ -183,7 +183,7 @@ class FirebaseServices {
     geocoding.Placemark firstPlaceMarks = placeMarks[0];
 
     // Return the formatted address
-    return '${firstPlaceMarks.name},${firstPlaceMarks.subLocality},${firstPlaceMarks.postalCode}';
+    return '${firstPlaceMarks.name}, ${firstPlaceMarks.subLocality}, ${firstPlaceMarks.locality}, ${firstPlaceMarks.administrativeArea} - ${firstPlaceMarks.postalCode}';
   }
 
   Future<void> setUserHomeLocationToDatabase({

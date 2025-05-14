@@ -125,7 +125,12 @@ class _ChooseAndTrackTruckState extends State<ChooseAndTrackTruck> {
                     ),
                   ],
                 )
-              : const Center(child: CircularProgressIndicator()),
+              : const Center(
+                  child: Text(
+                    "No truck drivers founds",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                ),
         ),
       ),
     );
