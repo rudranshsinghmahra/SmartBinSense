@@ -43,7 +43,6 @@
 - **Firebase** – Auth, Firestore DB, Storage  
 - **Google Maps API** – Real-time location and tracking  
 - **Provider** – Efficient state management  
-- **Push Notifications** – Alerts for collection updates and news
 
 ---
 
